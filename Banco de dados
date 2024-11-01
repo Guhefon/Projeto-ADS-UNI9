@@ -1,0 +1,76 @@
+CREATE TABLE Clientes (
+    CPF INT NOT NULL PRIMARY KEY,
+    Endereco INT,
+    NomeCompleto VARCHAR(255) NOT NULL,
+    PedidoID INT NOT NULL,
+    FOREIGN KEY (Endereco) REFERENCES Enderecos(id),
+    FOREIGN KEY (PedidoID) REFERENCES Pedidos(id)
+);
+
+CREATE TABLE Enderecos (
+    id INT NOT NULL PRIMARY KEY,
+    endereco VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Pedidos (
+    id INT NOT NULL PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL
+);
+
+INSERT INTO Enderecos (id, endereco) VALUES 
+(1, 'Rua A, 123'),
+(2, 'Avenida B, 456'),
+(3, 'Travessa C, 789');
+
+
+--  dados fictícios na tabela Pedidos
+INSERT INTO Pedidos (id, descricao) VALUES 
+(101, 'Pedido de Serviço A'),
+(102, 'Pedido de Serviço B'),
+(103, 'Pedido de Serviço C');
+
+INSERT INTO Clientes (CPF, Endereco, NomeCompleto, PedidoID) VALUES 
+(123456789, 1, 'João da Silva', 101),
+(987654321, 2, 'Maria Oliveira', 102),
+(111222333, 3, 'Carlos Santos', 103);
+
+
+
+CREATE TABLE Servicos (
+    RegistroDoServico INT NOT NULL PRIMARY KEY,
+    NumeroDoPedido INT,
+    TipoDeServico VARCHAR(255) NOT NULL,
+    FOREIGN KEY (NumeroDoPedido) REFERENCES Pedidos(id)
+);
+
+----Dados ficticios
+INSERT INTO Servicos (RegistroDoServico, NumeroDoPedido, TipoDeServico) VALUES 
+(1, 101, 'Instalação de Equipamento'),
+(2, 102, 'Manutenção Preventiva'),
+(3, 103, 'Reparo Técnico');
+
+
+CREATE TABLE Registro (
+    StatusdePagamento INT NOT NULL PRIMARY KEY,
+    FormadePagamento INT,
+    NomedoCliente VARCHAR(255) NOT NULL,
+    FOREIGN KEY (FormadePagamento) REFERENCES Pagamentos(id),
+    FOREIGN KEY (NomedoCliente) REFERENCES Clientes(NomeCompleto)
+);
+
+INSERT INTO Pagamentos (id, descricao) VALUES 
+(1, 'Cartão de Crédito'),
+(2, 'Boleto Bancário'),
+(3, 'Pix');
+
+
+INSERT INTO Clientes (CPF, Endereco, NomeCompleto, PedidoID) VALUES 
+(123456789, 1, 'João da Silva', 101),
+(987654321, 2, 'Maria Oliveira', 102),
+(111222333, 3, 'Carlos Santos', 103);
+
+
+INSERT INTO Registro (StatusdePagamento, FormadePagamento, NomedoCliente) VALUES 
+(1, 1, 'João da Silva'),      -- Pagamento via Cartão de Crédito
+(2, 2, 'Maria Oliveira'),     -- Pagamento via Boleto Bancário
+(3, 3, 'Carlos Santos');      -- Pagamento via Pix
